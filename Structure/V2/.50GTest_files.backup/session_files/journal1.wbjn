@@ -1,0 +1,65 @@
+# encoding: utf-8
+# 2021 R1
+SetScriptVersion(Version="21.1.216")
+template1 = GetTemplate(
+    TemplateName="Transient Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit(IsSpaceClaimGeometry=True)
+geometry1.Exit()
+geometry1.Edit(IsSpaceClaimGeometry=True)
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+modelComponent1.Refresh()
+geometry1.Edit(IsSpaceClaimGeometry=True)
+modelComponent1.Refresh()
+modelComponent1.Update(AllDependencies=True)
+geometry1.Exit()
+modelComponent1.Refresh()
+geometry1.Edit(IsSpaceClaimGeometry=True)
+favorites1 = EngData.LoadFavoriteItems()
+library1 = EngData.OpenLibrary(
+    Name="General Materials",
+    Source="General_Materials.xml")
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+matl1 = engineeringData1.ImportMaterial(
+    Name="Aluminum Alloy",
+    Source="General_Materials.xml")
+matl2 = engineeringData1.ImportMaterial(
+    Name="Aluminum Alloy",
+    Source="General_Materials.xml")
+matl2.Delete()
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+modelComponent1.Update(AllDependencies=True)
+engineeringDataComponent1 = system1.GetComponent(Name="Engineering Data")
+geometryComponent1 = system1.GetComponent(Name="Geometry")
+system2 = template1.CreateSystem(
+    Name="",
+    ComponentsToShare=[engineeringDataComponent1, geometryComponent1, modelComponent1],
+    Position="Right",
+    RelativeTo=system1)
+system2.Delete()
+Save(Overwrite=True)
+template2 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system3 = template2.ReplaceSystem(System=system1)
+geometry2 = GetDataContainer("Geometry 1")
+geometry2.Exit()
+setup1 = system3.GetContainer(ComponentName="Setup")
+setup1.Edit()
+model1 = system3.GetContainer(ComponentName="Model")
+model1.Exit()
+setup1.Edit()
+model1.Edit()
+model1.Exit()
+setup1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1.Exit()
+Save(Overwrite=True)
