@@ -1,0 +1,49 @@
+%TF.GenerationSoftware,KiCad,Pcbnew,(6.0.4)*%
+%TF.CreationDate,2022-08-06T15:33:01+10:00*%
+%TF.ProjectId,1U power board,31552070-6f77-4657-9220-626f6172642e,rev?*%
+%TF.SameCoordinates,Original*%
+%TF.FileFunction,Copper,L2,Bot*%
+%TF.FilePolarity,Positive*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW (6.0.4)) date 2022-08-06 15:33:01*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+%TA.AperFunction,ConnectorPad*%
+%ADD10C,5.600000*%
+%TD*%
+%TA.AperFunction,ComponentPad*%
+%ADD11C,3.600000*%
+%TD*%
+%TA.AperFunction,ComponentPad*%
+%ADD12R,1.700000X1.700000*%
+%TD*%
+%TA.AperFunction,ComponentPad*%
+%ADD13O,1.700000X1.700000*%
+%TD*%
+G04 APERTURE END LIST*
+D10*
+%TO.P,REF\u002A\u002A,1*%
+%TO.N,N/C*%
+X144900000Y-77750000D03*
+D11*
+X144900000Y-77750000D03*
+%TD*%
+D12*
+%TO.P,J1,1,Pin_1*%
+%TO.N,+7.5V*%
+X105000000Y-101000000D03*
+D13*
+%TO.P,J1,2,Pin_2*%
+%TO.N,GND*%
+X107540000Y-101000000D03*
+%TO.P,J1,3,Pin_3*%
+%TO.N,+5V*%
+X110080000Y-101000000D03*
+%TO.P,J1,4,Pin_4*%
+%TO.N,+3V3*%
+X112620000Y-101000000D03*
+%TD*%
+M02*
