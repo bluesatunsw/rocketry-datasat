@@ -1,128 +1,71 @@
 // Bluesat22 primary microcontroller Rocketry collab 10,000ft test flight
+// Matt Rossouw (omeh-a) Priyanta Islam ()
+// 08/22
 
-// #includes
 #include <stdio.h>
+#include "main.h"
+#include "buffer.h"
+#include "pins.h"
+#include "accel.h"
 
-// #defines
+static char buffer[BUFFER_SIZE * sizeof(buffer_entry_t)]
+static char failure_buffer[10*BUFFER_SIZE * sizeof(buffer_entry_t)]
 
+unsigned int buffer_index = 0;
+unsigned int failure_buffer_index = 0;
 
-// structs / enums
-enum error_t{
+int main(char *argv[], int argc) {
+    
+    // Initialise buffers
+    for (int i = 0; i < BUFFER_SIZE; i++) {
+        buffer[i] = (buffer_entry_t)0x0;
+    }
+    for (int i = 0; i < 10*BUFFER_SIZE; i++) {
+        failure_buffer[i] = (buffer_entry_t)0x0;
+    }
 
-}
+    // Perform device initialisation
+    deviceInit();
 
-typedef struct {
+    // Wait until accelerometer registers launch
+    launchWait();
 
-} Sensor_data_t;
-
-
-// forward definitions
-int init_setup(void);
-int low_power_mode(void);
-int scan_sensors(void);
-int monitor_check(void);
-void check_err(void);
-int write_sd_card(void);
-int write_sensor_data(void);
-int main_loop(void);
-int end_procedure(void);
-
-// global variables
-Sensor_data_t data;
-
-int main(void) {
-    int err = 0;
-
-    err = init_setup();
-    check_err(err);
-
-    err = init_calibration();
-    check_err(err);
-
-    err = low_power_mode();
-    check_err(err);
-
-    err = main_loop();
-    check_err(err);
-
-    err = end_procedure();
-    check_err(err);
+    // Start data collection
+    mainLoop();
 
     return 0;
-}
-
-/*  @brief setup communication with and configure peripherals
- *  @return 
-*/
-int init_setup(void) {
-    // TODO
-}
-
-/*  @brief wait in low power mode until device 
- *  @return 
-*/
-int low_power_mode(void) {
-    // TODO
-}
-
-/*  @brief read data packets from all sensors
- *  @return 
-*/
-int scan_sensors(void) {
-    // TODO
-}
-
-/*  @brief communicate with other microcontrollers on board to track functioning progress
- *  @return 
-*/
-int monitor_check(void) {
-    // TODO
-}
-
-/*  @brief checks for errors and if detected minimises data lost
-*/
-void check_err(void) {
-    // TODO
-}
-
-/*  @brief write to sensor data to sd card
- *  @return 
-*/
-int write_sensor_data(void) {
-    // TODO
-}
-
-/*  @brief write to sd card
- *  @return 
-*/
-int write_sd_card(void) {
-    // TODO
 }
 
 /*  @brief main loop of sensing, communicating and data logging
  *  @return 
 */
-int main_loop(void) {
-    // TODO
+void mainLoop(void) {
     while (1) {
-        // scan sensors
-        err = scan_sensors();
-
-        // communicate with other microcontroller
-        err = monitor_check();
-        check_err();
+        
 
         // write to SD card
-        write_sd_card();
+        int err = writeSD();
+        if (err) goto sd_fatal;
     }
+
+    return;
+
+sd_fatal:
+    // If the SD card is misbehaving, immediately terminate communication to
+    // protect stored data. Poll sensors at a much slower rate and utilise backup
+    // memory buffer to store data.
+    
+    // Don't touch the previously bufferred data.
+    while (1) {
+        // TODO: wait for 1 second using ESP32 RTOS
+
+        // 
+    }
+    
+
+    return;
 }
 
+void deviceInit() {
 
-/*  @brief make the microcontroller no longer write to the sd card if it is accidentally reset 
-    before the card runs out. 
- *  @return 
-*/
-int end_procedure(void) {
-    // TODO
 }
-

@@ -1,0 +1,14 @@
+// Pin outs for ESP32
+// Matt Rossouw (omeh-a)
+// 08/22
+#pragma once
+
+#define THERMISTOR_PIN_1 A0
+#define THERMISTOR_PIN_2 A1
+#define THERMISTOR_PIN_3 A2
+#define THERMISTOR_PIN_4 A3
+#define BAROMETER_PIN A4
+#define ACCELOROMETER_SPI_CS_PIN 0000
+#define ACCELOROMETER_SPI_MOSI_PIN 0000
+#define ACCELOROMETER_SPI_MISO_PIN 0000
+
