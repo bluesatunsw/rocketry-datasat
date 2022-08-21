@@ -1,7 +1,8 @@
 // In-memory representation of all data pushed to SD card
 #pragma once
+#define BUFFER_SIZE 100
 
-#define BUFFER_ENTRIES 100
+#include <stdint.h>
 
 typedef struct {
     // Primary accelerometer readings

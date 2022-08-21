@@ -2,14 +2,13 @@
 // Matt Rossouw (omeh-a) Priyanta Islam ()
 // 08/22
 
-#include <stdio.h>
-#include "main.h"
-#include "buffer.h"
-#include "pins.h"
-#include "accel.h"
 
-static char buffer[BUFFER_SIZE * sizeof(buffer_entry_t)]
-static char failure_buffer[10*BUFFER_SIZE * sizeof(buffer_entry_t)]
+#include "main.h"
+
+
+
+static char buffer[BUFFER_SIZE * sizeof(buffer_entry_t)];
+static char failure_buffer[10*BUFFER_SIZE * sizeof(buffer_entry_t)];
 
 unsigned int buffer_index = 0;
 unsigned int failure_buffer_index = 0;
@@ -18,10 +17,10 @@ int main(char *argv[], int argc) {
     
     // Initialise buffers
     for (int i = 0; i < BUFFER_SIZE; i++) {
-        buffer[i] = (buffer_entry_t)0x0;
+        buffer[i] = (buffer_entry_t*)0x0;
     }
     for (int i = 0; i < 10*BUFFER_SIZE; i++) {
-        failure_buffer[i] = (buffer_entry_t)0x0;
+        failure_buffer[i] = (buffer_entry_t*)0x0;
     }
 
     // Perform device initialisation
@@ -41,7 +40,19 @@ int main(char *argv[], int argc) {
 */
 void mainLoop(void) {
     while (1) {
+        buffer_entry_t *entry = (buffer_entry_t*)&buffer[buffer_index * sizeof(buffer_entry_t)];        
+
+        // Read RTC
+        //TODO
         
+        // Read accelerometer
+        accelRead(entry);
+
+        // Read IMU
+
+        // Read analog inputs
+        //TODO
+
 
         // write to SD card
         int err = writeSD();
@@ -59,7 +70,19 @@ sd_fatal:
     while (1) {
         // TODO: wait for 1 second using ESP32 RTOS
 
-        // 
+        // Get pointer to buffer entry
+        compact_buffer_entry_t *entry = (compact_buffer_entry_t*)&failure_buffer[failure_buffer_index * sizeof(compact_buffer_entry_t)];
+
+        // Read RTC
+        //TODO
+
+        // Read accelerometer
+        compact_accelRead(entry);
+
+        // Read IMU
+        //TODO
+        
+        
     }
     
 

@@ -1,4 +1,4 @@
-// Accelorometer functions
+// Accelorometer and IMU functions
 // Matt Rossouw (omeh-a)
 // 08/22
 
@@ -13,7 +13,7 @@ void launchWait(void) {
     }
 }
 
-void accelRead(buffet_entry_t *entry) {
+void accelRead(buffer_entry_t *entry) {
     entry->thust_accel = /*TODO*/;
 }
 
