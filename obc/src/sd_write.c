@@ -1,31 +1,17 @@
-//SD card write function
-//Priyanta Islam
-//22/08/12
+// SD card write function
+// Priyanta Islam, Matt Rossouw
+// 22/08/12
 
-#include <stdio.h>
-#include <string.h>
-#include <sys/unistd.h>
-#include <sys/stat.h>
-#include "esp_err.h"
-#include "esp_log.h"
-#include "esp_vfs_fat.h"
-#include "driver/sdspi_host.h"
-#include "driver/spi_common.h"
-#include "sdmmc_cmd.h"
-#include "sdkconfig.h"
-
+#include "sd_write.h"
 
 static const char *TAG = "datasat";
 
 #define MOUNT_POINT "/sdcard"
 #define SPI_DMA_CHAN  SPI_DMA_CH_AUTO
 
+static FILE *logfile;
 
-/**
- * Write to SD card over SPI
- * Takes MISO, MOSI, CLK and CS signals as params
- */
-int sd_write(int MISO, int MOSI, int CLK, int CS) {
+int sd_init(int MISO, int MOSI, int CLK, int CS) {
     esp_err_t ret;
     // Options for mounting the filesystem.
     // If format_if_mount_failed is set to true, SD card will be partitioned and
@@ -79,21 +65,31 @@ int sd_write(int MISO, int MOSI, int CLK, int CS) {
     //sdmmc_card_print_info(stdout, card);
 
     // create a file.
-    FILE *f = fopen(MOUNT_POINT"/hello.txt", "w");
-    if (f == NULL) {
+    logfile = fopen(MOUNT_POINT"/hello.txt", "a+");
+    if (logfile == NULL) {
         ESP_LOGE(TAG, "Failed to open file for writing");
         return 1;
     }
-    fprintf(f, "TEST RUN 1.0!\n", card->cid.name);
-    fclose(f);
+
+
+}
+
+
+/**
+ * Write to SD card over SPI
+ * Takes MISO, MOSI, CLK and CS signals as params
+ */
+int sd_write(buffer_entry_t *data) {
+    // Package data into a string
+    uint64_t buf[6];
+    buf[0] = data->thrust_accel;
+    buf[1] = data->thermA << 48 | data->thermB << 32 | data->thermC << 16 | data->thermD;
+    buf[3] = data->rtc_time << 32 | data->imu_gyro_x << 16 | data->imu_gyro_y;
+    buf[4] = data->imu_gyro_z << 48 | data->imu_accel_x << 32 | data->imu_accel_y << 16 | data->imu_accel_z;
+    buf[5] = data->imu_mag_x << 48 | data->imu_mag_y << 32 | data->imu_mag_z << 16 | 0x0;
     
+    // This is maybe a very hacky way to do this, but it is midnight and I don't have better thoughts in me.
 
-    //unmount partition and disable SDMMC or SPI peripheral
-    esp_vfs_fat_sdcard_unmount(mount_point, card);
-
-    //deinitialize the bus after all devices are removed
-    spi_bus_free(host.slot);
-
-    return 0;
+    return fprintf(logfile, "%s", (char *)&buf);
 }
 

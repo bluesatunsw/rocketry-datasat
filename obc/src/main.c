@@ -2,30 +2,34 @@
 // Matt Rossouw (omeh-a) Priyanta Islam ()
 // 08/22
 
-
 #include "main.h"
 
-
-
-static char buffer[BUFFER_SIZE * sizeof(buffer_entry_t)];
-static char failure_buffer[10*BUFFER_SIZE * sizeof(buffer_entry_t)];
+// Buffers stored as byte fields to avoid heap operations. This may or may not work.
+static char sd_buffer[BUFFER_SIZE * sizeof(buffer_entry_t)];
+static char flash_buffer[BUFFER_SIZE * sizeof(buffer_entry_t)];
 
 unsigned int buffer_index = 0;
 unsigned int failure_buffer_index = 0;
 
 int main(char *argv[], int argc) {
     
-    // Initialise buffers
-    for (int i = 0; i < BUFFER_SIZE; i++) {
-        buffer[i] = (buffer_entry_t*)0x0;
+    // Initialise buffers - set each entry to 0
+    for (int i = 0; i < BUFFER_SIZE * sizeof(buffer_entry_t); i++) {
+        sd_buffer[i] = 0;
     }
-    for (int i = 0; i < 10*BUFFER_SIZE; i++) {
-        failure_buffer[i] = (buffer_entry_t*)0x0;
+    for (int i = 0; i < BUFFER_SIZE * sizeof(compact_buffer_entry_t); i++) {
+        flash_buffer[i] = 0;
     }
 
     // Perform device initialisation
     deviceInit();
 
+    // Initialise onboard flash
+    flashwrite_init();
+
+    // Initialise SD card
+    sdcard_init();
+    
     // Wait until accelerometer registers launch
     launchWait();
 
@@ -40,7 +44,7 @@ int main(char *argv[], int argc) {
 */
 void mainLoop(void) {
     while (1) {
-        buffer_entry_t *entry = (buffer_entry_t*)&buffer[buffer_index * sizeof(buffer_entry_t)];        
+        buffer_entry_t *entry = (buffer_entry_t*)&sd_buffer[buffer_index * sizeof(buffer_entry_t)];        
 
         // Read RTC
         //TODO
@@ -64,14 +68,14 @@ void mainLoop(void) {
 sd_fatal:
     // If the SD card is misbehaving, immediately terminate communication to
     // protect stored data. Poll sensors at a much slower rate and utilise backup
-    // memory buffer to store data.
+    // storage onboard ESP
     
     // Don't touch the previously bufferred data.
     while (1) {
         // TODO: wait for 1 second using ESP32 RTOS
 
         // Get pointer to buffer entry
-        compact_buffer_entry_t *entry = (compact_buffer_entry_t*)&failure_buffer[failure_buffer_index * sizeof(compact_buffer_entry_t)];
+        compact_buffer_entry_t *entry = (compact_buffer_entry_t*)&flash_buffer[failure_buffer_index * sizeof(compact_buffer_entry_t)];
 
         // Read RTC
         //TODO
@@ -81,7 +85,9 @@ sd_fatal:
 
         // Read IMU
         //TODO
-        
+
+        // Commit to flash
+        flashwrite(entry);
         
     }
     

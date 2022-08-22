@@ -5,6 +5,8 @@
 #include "buffer.h"
 #include "pins.h"
 #include "accel.h"
+#include "sd_write.h"
+#include "flashwrite.h"
 
 // ESP includes
 #include "sdkconfig.h"
@@ -14,4 +16,6 @@
 #include "esp_flash.h"
 #include <stdio.h>
 
-int mainLoop(void);
+int main(char *argv[], int argc);
+
+int mainLoop(id);
