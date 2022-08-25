@@ -35,9 +35,12 @@
 //#include "Wire.h"   
 #include <i2c_t3.h>
 #include <SPI.h>
+#include <SD.h>
 
 
-
+//====== SD CARD CS SIGNAL PIN ======//
+#define SD_CARD_CS_PIN 2
+// Line 612 for buffer containing data
 
 // See MS5637-02BA03 Low Voltage Barometric Pressure Sensor Data Sheet
 #define MS5637_RESET      0x1E
@@ -604,6 +607,9 @@ void loop()
     
     Serial.print("rate = "); Serial.print((float)sumCount/sum, 2); Serial.println(" Hz");
     }
+
+
+    //====== BUFFER CONTAINING SENSOR DATA ======//
     uint64_t buf[4];
 
     buf[0] = (1000 * ax) << 32 | (1000*ay) << 16 | (1000*az);
@@ -612,6 +618,8 @@ void loop()
     buf[3] = mx << 32 | my << 16 | mz;
     buf[4] = altitude;
 
+    //FUNCTION FOR WRITING TO SD CARD
+    sd_wr(SD_CARD_CS_PIN, buf);
 
        
  
@@ -1290,4 +1298,46 @@ void I2Cscan()
         Wire.requestFrom(address, (size_t) count);  // Read bytes from slave register address 
 	while (Wire.available()) {
         dest[i++] = Wire.read(); }         // Put read results in the Rx buffer
+}
+
+
+/*Takes in the cs signal and buffer as input
+*writes binary file to sd card
+*/
+void sd_wr(int cs, uint64_t buf[]){
+  
+  File myFile;
+  //change this if buffer size changes
+  int buffer_size = 5;
+  
+  if (!SD.begin(cs)) {
+    Serial.println(F("SD CARD FAILED, OR NOT PRESENT!"));
+    while (1); // don't do anything more:
+  }
+
+  Serial.println(F("SD CARD INITIALIZED."));
+
+  // create new file by opening file for writing
+  
+  myFile = SD.open("data1", FILE_WRITE);
+
+  if (myFile) {
+    
+    for(int i = 0; i < buffer_size; i++) {
+       
+       myFile.write(buf[i] >> 56);
+       myFile.write(buf[i] >> 48);
+       myFile.write(buf[i] >> 40);
+       myFile.write(buf[i] >> 32);
+       myFile.write(buf[i] >> 24);
+       myFile.write(buf[i] >> 16);
+       myFile.write(buf[i] >> 8);
+       myFile.write(buf[i]);
+    }
+
+    myFile.close();
+  } else {
+    Serial.print(F("SD Card: error on opening file arduino.txt"));
+  }
+
 }
