@@ -35,16 +35,9 @@
 //#include "Wire.h"   
 #include <i2c_t3.h>
 #include <SPI.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_PCD8544.h>
 
-// Using NOKIA 5110 monochrome 84 x 48 pixel display
-// pin 7 - Serial clock out (SCLK)
-// pin 6 - Serial data out (DIN)
-// pin 5 - Data/Command select (D/C)
-// pin 3 - LCD chip select (SCE)
-// pin 4 - LCD reset (RST)
-Adafruit_PCD8544 display = Adafruit_PCD8544(7, 6, 5, 3, 4);
+
+
 
 // See MS5637-02BA03 Low Voltage Barometric Pressure Sensor Data Sheet
 #define MS5637_RESET      0x1E
@@ -319,24 +312,8 @@ void setup()
   pinMode(myLed, OUTPUT);
   digitalWrite(myLed, HIGH);
   
-  display.begin(); // Initialize the display
-  display.setContrast(40); // Set the contrast
-  
-// Start device display with ID of sensor
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setCursor(0,0); display.print("MPU9250");
-  display.setTextSize(1);
-  display.setCursor(0, 20); display.print("9-DOF 16-bit");
-  display.setCursor(0, 30); display.print("motion sensor");
-  display.setCursor(20,40); display.print("60 ug LSB");
-  display.display();
   delay(1000);
 
-// Set up for data display
-  display.setTextSize(1); // Set text size to normal, 2 is twice normal etc.
-  display.setTextColor(BLACK); // Set pixel color; 1 on the monochrome screen
-  display.clearDisplay();   // clears the screen and buffer
 
   I2Cscan();// look for I2C devices on the bus
     
@@ -344,12 +321,7 @@ void setup()
   Serial.println("MPU9250 9-axis motion sensor...");
   byte c = readByte(MPU9250_ADDRESS, WHO_AM_I_MPU9250);  // Read WHO_AM_I register for MPU-9250
   Serial.print("MPU9250 "); Serial.print("I AM "); Serial.print(c, HEX); Serial.print(" I should be "); Serial.println(0x71, HEX);
-  display.setCursor(20,0); display.print("MPU9250");
-  display.setCursor(0,10); display.print("I AM");
-  display.setCursor(0,20); display.print(c, HEX);  
-  display.setCursor(0,30); display.print("I Should Be");
-  display.setCursor(0,40); display.print(0x71, HEX); 
-  display.display();
+  
   delay(1000); 
 
   if (c == 0x71) // WHO_AM_I should always be 0x68
@@ -375,22 +347,7 @@ void setup()
    Serial.println("accel biases (mg)"); Serial.println(1000.*accelBias[0]); Serial.println(1000.*accelBias[1]); Serial.println(1000.*accelBias[2]);
    Serial.println("gyro biases (dps)"); Serial.println(gyroBias[0]); Serial.println(gyroBias[1]); Serial.println(gyroBias[2]);
 
-  display.clearDisplay();
-     
-  display.setCursor(0, 0); display.print("MPU9250 bias");
-  display.setCursor(0, 8); display.print(" x   y   z  ");
-
-  display.setCursor(0,  16); display.print((int)(1000*accelBias[0])); 
-  display.setCursor(24, 16); display.print((int)(1000*accelBias[1])); 
-  display.setCursor(48, 16); display.print((int)(1000*accelBias[2])); 
-  display.setCursor(72, 16); display.print("mg");
-    
-  display.setCursor(0,  24); display.print(gyroBias[0], 1); 
-  display.setCursor(24, 24); display.print(gyroBias[1], 1); 
-  display.setCursor(48, 24); display.print(gyroBias[2], 1); 
-  display.setCursor(66, 24); display.print("o/s");   
- 
-  display.display();
+  
   delay(1000);  
    
   initMPU9250(); 
@@ -399,13 +356,7 @@ void setup()
   // Read the WHO_AM_I register of the magnetometer, this is a good test of communication
   byte d = readByte(AK8963_ADDRESS, WHO_AM_I_AK8963);  // Read WHO_AM_I register for AK8963
   Serial.print("AK8963 "); Serial.print("I AM "); Serial.print(d, HEX); Serial.print(" I should be "); Serial.println(0x48, HEX);
-  display.clearDisplay();
-  display.setCursor(20,0); display.print("AK8963");
-  display.setCursor(0,10); display.print("I AM");
-  display.setCursor(0,20); display.print(d, HEX);  
-  display.setCursor(0,30); display.print("I Should Be");
-  display.setCursor(0,40); display.print(0x48, HEX);  
-  display.display();
+  
   delay(1000); 
   
   // Get magnetometer calibration from AK8963 ROM
@@ -423,12 +374,7 @@ void setup()
   Serial.print("Z-Axis sensitivity adjustment value "); Serial.println(magCalibration[2], 2);
   }
   
-  display.clearDisplay();
-  display.setCursor(20,0); display.print("AK8963");
-  display.setCursor(0,10); display.print("ASAX "); display.setCursor(50,10); display.print(magCalibration[0], 2);
-  display.setCursor(0,20); display.print("ASAY "); display.setCursor(50,20); display.print(magCalibration[1], 2);
-  display.setCursor(0,30); display.print("ASAZ "); display.setCursor(50,30); display.print(magCalibration[2], 2);
-  display.display();
+  
   delay(1000);  
   
   // Reset the MS5637 pressure sensor
@@ -450,11 +396,7 @@ void setup()
   nCRC = MS5637checkCRC(Pcal);  //calculate checksum to ensure integrity of MS5637 calibration data
   Serial.print("Checksum = "); Serial.print(nCRC); Serial.print(" , should be "); Serial.println(refCRC);  
   
-  display.clearDisplay();
-  display.setCursor(20,0); display.print("MS5637");
-  display.setCursor(0,10); display.print("CRC is "); display.setCursor(50,10); display.print(nCRC);
-  display.setCursor(0,20); display.print("Should be "); display.setCursor(50,30); display.print(refCRC);
-  display.display();
+  
   delay(1000);  
 
   attachInterrupt(intPin, myinthandler, RISING);  // define interrupt for INT pin output of MPU9250
