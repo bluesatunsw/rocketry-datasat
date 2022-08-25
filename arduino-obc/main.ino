@@ -604,30 +604,21 @@ void loop()
     
     Serial.print("rate = "); Serial.print((float)sumCount/sum, 2); Serial.println(" Hz");
     }
-   
-    display.clearDisplay();    
- 
-    display.setCursor(0, 0); display.print(" x   y   z ");
+    uint64_t buf[4];
 
-    display.setCursor(0,  8); display.print((int)(1000*ax)); 
-    display.setCursor(24, 8); display.print((int)(1000*ay)); 
-    display.setCursor(48, 8); display.print((int)(1000*az)); 
-    display.setCursor(72, 8); display.print("mg");
-    
-    display.setCursor(0,  16); display.print((int)(gx)); 
-    display.setCursor(24, 16); display.print((int)(gy)); 
-    display.setCursor(48, 16); display.print((int)(gz)); 
-    display.setCursor(66, 16); display.print("o/s");    
+    buf[0] = (1000 * ax) << 32 | (1000*ay) << 16 | (1000*az);
+    buf[1] = Temperature;
+    buf[2] = gx << 32 | gy << 16 | gz;
+    buf[3] = mx << 32 | my << 16 | mz;
+    buf[4] = altitude;
 
-    display.setCursor(0,  24); display.print((int)(mx)); 
-    display.setCursor(24, 24); display.print((int)(my)); 
-    display.setCursor(48, 24); display.print((int)(mz)); 
-    display.setCursor(72, 24); display.print("mG");    
+
+       
  
-    display.setCursor(0,  32); display.print((int)(yaw)); 
+    /*display.setCursor(0,  32); display.print((int)(yaw)); 
     display.setCursor(24, 32); display.print((int)(pitch)); 
     display.setCursor(48, 32); display.print((int)(roll)); 
-    display.setCursor(66, 32); display.print("ypr");  
+    display.setCursor(66, 32); display.print("ypr");  */
   
     // With these settings the filter is updating at a ~145 Hz rate using the Madgwick scheme and 
     // >200 Hz using the Mahony scheme even though the display refreshes at only 2 Hz.
@@ -640,10 +631,10 @@ void loop()
     // stabilization control of a fast-moving robot or quadcopter. Compare to the update rate of 200 Hz
     // produced by the on-board Digital Motion Processor of Invensense's MPU6050 6 DoF and MPU9150 9DoF sensors.
     // The 3.3 V 8 MHz Pro Mini is doing pretty well!
-    display.setCursor(0, 40); display.print(altitude, 0); display.print("ft"); 
+    /*display.setCursor(0, 40); display.print(altitude, 0); display.print("ft"); 
     display.setCursor(68, 0); display.print(9.*Temperature/5. + 32., 0); 
     display.setCursor(42, 40); display.print((float) sumCount / (1000.*sum), 2); display.print("kHz"); 
-    display.display();
+    display.display();*/
 
     digitalWrite(myLed, !digitalRead(myLed));
     count = millis(); 
