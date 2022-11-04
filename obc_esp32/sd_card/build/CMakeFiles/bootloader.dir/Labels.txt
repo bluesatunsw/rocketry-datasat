@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/CMakeFiles/bootloader
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/CMakeFiles/bootloader.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/CMakeFiles/bootloader-complete.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule

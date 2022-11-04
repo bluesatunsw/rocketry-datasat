@@ -1,0 +1,5 @@
+source "/Users/priyantaislam/esp/esp-idf/components/app_update/Kconfig.projbuild"
+source "/Users/priyantaislam/esp/esp-idf/components/bootloader/Kconfig.projbuild"
+source "/Users/priyantaislam/esp/esp-idf/components/esptool_py/Kconfig.projbuild"
+source "/Users/priyantaislam/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+source "/Users/priyantaislam/Downloads/Bluesat/rocketry-datasat/obc_esp32/sd_card/main/Kconfig.projbuild"

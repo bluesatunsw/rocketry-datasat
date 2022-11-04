@@ -1,0 +1,7 @@
+source "/Users/priyantaislam/esp/esp-idf/components/efuse/Kconfig"
+source "/Users/priyantaislam/esp/esp-idf/components/esp32c3/Kconfig"
+source "/Users/priyantaislam/esp/esp-idf/components/esp_common/Kconfig"
+source "/Users/priyantaislam/esp/esp-idf/components/esp_system/Kconfig"
+source "/Users/priyantaislam/esp/esp-idf/components/log/Kconfig"
+source "/Users/priyantaislam/esp/esp-idf/components/newlib/Kconfig"
+source "/Users/priyantaislam/esp/esp-idf/components/spi_flash/Kconfig"
