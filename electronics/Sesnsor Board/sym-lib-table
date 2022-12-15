@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name "IMU")(type "Legacy")(uri "${KIPRJMOD}/Libaries/H3LIS100DLTR.lib")(options "")(descr ""))
+  (lib (name "BlueSat")(type "KiCad")(uri "${KIPRJMOD}/Libaries/BlueSat.kicad_sym")(options "")(descr ""))
+)
