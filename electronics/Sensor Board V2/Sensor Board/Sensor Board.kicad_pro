@@ -33,9 +33,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.0,
-          "height": 0.9,
-          "width": 1.5
+          "drill": 0.762,
+          "height": 1.524,
+          "width": 1.524
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -45,16 +45,10 @@
         "silk_text_upright": false,
         "zones": {
           "45_degree_only": false,
-          "min_clearance": 0.09999999999999999
+          "min_clearance": 0.508
         }
       },
-      "diff_pair_dimensions": [
-        {
-          "gap": 0.0,
-          "via_gap": 0.0,
-          "width": 0.0
-        }
-      ],
+      "diff_pair_dimensions": [],
       "drc_exclusions": [],
       "meta": {
         "version": 2
@@ -103,7 +97,7 @@
         "allow_blind_buried_vias": false,
         "allow_microvias": false,
         "max_error": 0.005,
-        "min_clearance": 0.19999999999999998,
+        "min_clearance": 0.0,
         "min_copper_edge_clearance": 0.0,
         "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.25,
@@ -112,21 +106,14 @@
         "min_silk_clearance": 0.0,
         "min_through_hole_diameter": 0.3,
         "min_track_width": 0.19999999999999998,
-        "min_via_annular_width": 0.6,
-        "min_via_diameter": 0.6,
+        "min_via_annular_width": 0.049999999999999996,
+        "min_via_diameter": 0.39999999999999997,
         "solder_mask_clearance": 0.0,
         "solder_mask_min_width": 0.0,
         "use_height_for_length_calcs": true
       },
-      "track_widths": [
-        0.0
-      ],
-      "via_dimensions": [
-        {
-          "diameter": 0.0,
-          "drill": 0.0
-        }
-      ],
+      "track_widths": [],
+      "via_dimensions": [],
       "zones_allow_external_fillets": false,
       "zones_use_no_outline": true
     },
@@ -346,7 +333,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Sensors.kicad_pro",
+    "filename": "Sensor Board.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -425,20 +412,8 @@
   },
   "sheets": [
     [
-      "449991c1-1181-4007-9191-8f4b20a99276",
+      "d21a3a61-fd62-4be4-b1b0-fb0efbcb9d56",
       ""
-    ],
-    [
-      "ecad1419-5a3a-4a3c-8c91-5b80e118f60a",
-      "GY-91"
-    ],
-    [
-      "d702620d-f2ad-42a4-b934-a21131a5b4d7",
-      "Temp & Humidity Si7021"
-    ],
-    [
-      "3c13fc4b-1c18-4aa7-a882-2b36b31a27fe",
-      "MicroSD"
     ]
   ],
   "text_variables": {}
